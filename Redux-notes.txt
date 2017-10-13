@@ -1,7 +1,8 @@
 ------Reducers------
 
-A reducer is a function that returns a piece of the application state.
-Because our application can have many different pieces of state we can have many different reducers.
+A reducer is a function that returns(generates) a piece of the application state.
+Because our application can have many different pieces of state we can have many 
+different reducers.
 
 BOOK app
 
@@ -16,7 +17,7 @@ BOOK app
         activeBook: {title: 'Javascript: The Good Parts'} // activeBook piece of state is produced by ActiveBook Reducer
     }
 
-    Each value is a Reducer that changes its of the state(key).
+    Each value is a Reducer that changes its piece of the state(key).
     The reducer is a function that returns a value.
 
 ------Containers - Connecting Redux to React------
@@ -26,6 +27,10 @@ react-redux library connects React with Redux. It's already in our package.json 
 
 A container is a react component with a direct connection to the state managed by redux.
 It's the middle box in the diagram.
+
+    containers/book-list-js
+        // CONTAINER
+        class BookList extends Component {
 
     Offial Redux docs say when React compoment has no conneciton to redux it's called dumb
     component. When there is a connection to Redux it's called a smart component.
@@ -42,3 +47,58 @@ Which component do we want to turn into a container?
 
 ONLY THE MOST PARENT COMPONENT THAT USES A SPECIFIC PIECE OF STATE NEEDS TO BE CONNECTED TO REDUX!
 Because of this we promoted book-list.js to be a Container.
+
+------Implementation of Container Class------  
+
+Again react-redux is the glue to connecting React and Redux via its 'connect' function.
+
+    containers/book-list.js
+        import { connect } from 'react-redux';
+
+'connect' takes a function and a component and produces a container. The container is a 
+component that is aware of the state contanied in Redux.
+
+------Containers and Reducers Review------  
+
+1. Define your reducer containing your application data(state) via reducer_books.js
+2. Add reducer to combine reducer call. 
+
+    reducers/index.js
+        import { combineReducers } from 'redux';
+        import BooksReducer from './reducer_books';
+
+        const rootReducer = combineReducers({
+             // The rootReducer adds a key to called 'books' to global application state.
+             // And it value is whatever get's returned from booksReducer, which is our array of books.
+            books: BooksReducer
+        });
+
+        export default rootReducer;
+
+3. To make class BookList aware of the state in the Reducer we promoted it to a container by first 
+importing
+
+    containers/book-list.js
+        import { connect } from 'react-redux';
+
+and then defined 
+
+    function mapStateToProps(state)
+
+to hook component to function mapStateToProps
+
+    export default connect(mapStateToProps)(BookList); 
+
+4. When application state changes the containers re-renders.
+
+------Actions and Action Creators------  
+
+Action creator is just a function that returns and action.
+And action flows thru reducers to decide to whether or not state needs to changed via Redux
+
+Just like binding reducer to Container smart component BookList(book-list.js) you do the same
+for action creator. You bind it to Container smart component BookList(book-list.js).
+This allow action creator to flow through the reducer.
+
+    containers/book-list.js
+        import { bindActionCreators } from 'redux';
