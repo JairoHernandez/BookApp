@@ -102,3 +102,52 @@ This allow action creator to flow through the reducer.
 
     containers/book-list.js
         import { bindActionCreators } from 'redux';
+
+------Creating an Action------  
+
+ Actions usually have 2 values: type and payload.
+    type is purpose of an action
+
+------Consuming Actions in Reducers------  
+
+Reducers get 2 arguments:  state & action.
+Only called when there's an action dispatched by out app.
+
+Redux does not allow a reducer to return undefined or else it will throw an error.
+You must always return a non-undefined value -- state=null.
+
+------Conditional Rendering------  
+
+If you dont have a "reasonable" state at bootup/loading of page you will see
+this error:
+
+    Uncaught TypeError: Cannot read property 'title' of null
+
+so use this workaround
+
+        if (!this.props.book) {
+            return (<div>Select a book to get started.</div>);
+        }
+
+------Reducers and Action Review------  
+
+class BookDetail extends Component {
+    
+    // this is component state.
+    this.state.whatever // completely different/separate than Application redux state
+
+Application state is formed by reducers.
+
+Reducers all get tied together with combineReducers method in reducers/index.js
+For each key we assgined 1 reducer.
+    const rootReducer = combineReducers({
+        books: BooksReducer,
+        activeBook: ActiveBook
+Reducers are in charge of manipulating state over time and do that through the use of actions that are dispatched.
+Once the action is dispatched the reducer flows through the different options to either change the state or keep 
+it the same based on the type of action received.
+Actions must always hve a type and optional payload(typical name but you can call it something else).
+        
+        actions/index.js
+            type: 'BOOK_SELECTED',
+            payload: book

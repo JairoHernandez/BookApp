@@ -9,7 +9,12 @@ class BookList extends Component {
     renderList() {
         return this.props.books.map(book => {
             return (
-                <li key={book.title} className="list-group-item">{book.title}</li>
+                <li 
+                    key={book.title} 
+                    onClick={() => this.props.selectBook(book)}
+                    className="list-group-item">
+                    {book.title}
+                </li>
             );
         });
     }
@@ -23,6 +28,7 @@ class BookList extends Component {
     }
 }
 
+// Application state activeBook from reducers/index.jsx
 function mapStateToProps(state) { // IF state ever changes component Book will auto re-render with new list of books.
     // Whatever is returned will show up as props inside of BookList.
     return {
@@ -30,6 +36,7 @@ function mapStateToProps(state) { // IF state ever changes component Book will a
     };
 }
 
+// Sends action type and payload from action creator to reducer.
 // Anything returned from this function will end up as props for BookList container.
 function mapDispatchToProps(dispatch) {
     // Whenever selectBook is called, the result should be passed to all 
