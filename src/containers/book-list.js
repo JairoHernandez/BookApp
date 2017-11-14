@@ -31,6 +31,7 @@ class BookList extends Component {
 // Application state activeBook from reducers/index.jsx
 function mapStateToProps(state) { // IF state ever changes component Book will auto re-render with new list of books.
     // Whatever is returned will show up as props inside of BookList.
+    // console.log(state.books); // [ Obj, Obj, Obj, Obj]
     return {
         books: state.books // This now becomes to avaible to our component as this.props.books.map
     };

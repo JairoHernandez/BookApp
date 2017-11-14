@@ -20,6 +20,7 @@ class BookDetail extends Component {
 
 // Application state activeBook from reducers/index.jsx
 function mapStateToProps(state) {
+    // MUST RETURN OBJECT ELSE ERROR HAPPENS
     return {
         book: state.activeBook // from reducers/index.js
     };
